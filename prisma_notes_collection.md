@@ -1,6 +1,6 @@
-## Prisma Query
+# Prisma Query
 
-# 1. Pagination / Batch Query (next_discord)
+## 1. Pagination / Batch Query (next_discord)
 ```
 await db.message.findMany({
 	take: MESSAGES_BATCH,
@@ -24,7 +24,7 @@ await db.message.findMany({
 })
 ```
 
-# 2. Select and Update with one query (Next Form Builder)
+## 2. Select and Update with one query (Next Form Builder)
 ```
 await prisma.form.update({
 	data:{
@@ -44,7 +44,7 @@ await prisma.form.update({
 })
 ```
 
-# 3. Basic: Create Many in one query (Next LMS)
+## 3. Basic: Create Many in one query (Next LMS)
 ```
 await database.category.createMany({
 	data: [
@@ -59,7 +59,7 @@ await database.category.createMany({
 })
 ```
 
-# 4. Basic: Delete
+## 4. Basic: Delete
 ```
 await db.course.delete({
   where: {
@@ -68,7 +68,7 @@ await db.course.delete({
 });
 ```
 
-#  5. Basic: Filter with contain(like) keyword(NEXT LMS)
+##  5. Basic: Filter with contain(like) keyword(NEXT LMS)
 ```
 await db.course.findMany({
   where: {
@@ -95,7 +95,7 @@ await db.course.findMany({
 });
 ```
 
-# 6. Basic: Update
+## 6. Basic: Update
 ```
 await db.chapter.update({
   where: {
@@ -108,7 +108,7 @@ await db.chapter.update({
 });
 ```
 
-# 7. Advance: Upsert (combination of update and insert,Next LMS)
+## 7. Advance: Upsert (combination of update and insert,Next LMS)
 ```
 await prisma.model.upsert({
   where: { id: 1 }, // Check if a record with ID 1 exists
@@ -117,7 +117,7 @@ await prisma.model.upsert({
 });
 ```
 
-# 8. Example: Find many with Not operation (Next Messeger Clone)
+## 8. Example: Find many with Not operation (Next Messeger Clone)
 ```
 await prisma.user.findMany({
   orderBy: {
@@ -131,7 +131,7 @@ await prisma.user.findMany({
 });
 ```
 
-# 9. Basic: FindUnique
+## 9. Basic: FindUnique
 ```
 await prisma.user.findUnique({
   where: {
@@ -140,7 +140,7 @@ await prisma.user.findUnique({
 });
 ```
 
-# 10. Example: Two level deep include
+## 10. Example: Two level deep include
 ```
 await prisma.conversation.findMany({
   orderBy: {
@@ -163,7 +163,7 @@ await prisma.conversation.findMany({
 });
 ```
 
-# 11. Basic: Connect a single record
+## 11. Basic: Connect a single record
 ```
 await prisma.message.create({
   include: {
@@ -188,7 +188,7 @@ await prisma.message.create({
 });
 ```
 
-# 12. Example: Connect to many records
+## 12. Example: Connect to many records
 ```
 await prisma.conversation.create({
 	data: {
@@ -211,7 +211,7 @@ await prisma.conversation.create({
 });
 ```
 
-# 13. Basic: OR operator
+## 13. Basic: OR operator
 ```
 await prisma.conversation.findMany({
   where: {
