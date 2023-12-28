@@ -1,6 +1,6 @@
 # Prisma Query
-
-## 1. Pagination / Batch Query (next_discord) - [x]
+- [x] sjs
+## 1. Pagination / Batch Query (next_discord)
 ```
 await db.message.findMany({
 	take: MESSAGES_BATCH,
