@@ -1,0 +1,287 @@
+use <dbname> - create(if not exists) or switch database
+
+db.dropDatabase(); - drop database
+show databases;/show dbs - show all databases
+
+db - show current working database
+
+
+---
+
+
+db.createCollection("<collection name>")
+db.collectionName.drop()
+show collections
+
+-----
+
+data type in mongodb
+BSON
+JSON
+Integer
+Boolean
+Arrays
+Object
+Null
+Date
+Timestamp
+Object Id
+Code
+
+
+-----
+
+db.<collectionName>.insert({"name":"xxxx"})
+
+//insert many
+db.<collectionName>.insert([
+{"name":"xxxx"},
+{"name":"xxx2"}
+])
+
+
+-------
+update
+
+
+db.<collectioName>.updateMany({"name":"xxxx"},{$set:{}})
+
+db.c1.updateOne({"name":"xxxx"},{$set:{"mobile":"123123","isActive":true}})
+
+replace existing doc
+
+db.COLLECTION_NAME.save({_id:ObjectId(),NEW_DATA})
+db.mycol.save( { "_id" : ObjectId("507f191e810c19729de860ea"), "title":"Tutorials Point New Topic", "by":"Tutorials Point" } )
+
+
+//semi sysmbol is required
+
+-------------
+
+search command
+
+db.collectioName.find()
+db.COLLECTION_NAME.find().pretty()
+db.collectioName.findOne() - first document in collection
+db.collectioName.find({"key":"value","key2":"value2"})
+db.collectioName.findOneAndReplace({"key":"value","key2":"value2"},<replacement>)
+db.collectioName.findOneAndDelete({"key":"value","key2":"value2"})
+
+
+
+------
+delete command
+
+db.collectionName.deleteOne({})
+db.collectionName.deleteMany({})
+
+
+-------
+query
+
+lt - less than
+lte - less than equal
+gt - greater than
+gte - greater than equal
+
+$and
+$or
+$not
+
+limit()
+skip()
+
+
+exp:
+db.collectionName.find({"Tax":{$lt:"30"}})
+
+db.collectionName.find({$and :[{"key":"val"},{"key":"val"}]})
+
+db.collectionName.find({$or :[{"key":"val"},{"key":"val"}]})
+
+db.COLLECTION_NAME.find({not: [ {key1: value1}, {key2:value2} ]})
+
+db.mycol.find({},{"title":1,_id:0}).limit(2)
+
+db.mycol.find({},{"title":1,_id:0}).limit(1).skip(1)
+
+
+----
+and & or
+b.mycol.find({"likes": {$gt:10}, $or: [{"key":"val"},{"key":"val"]}).pretty()
+
+------
+select specific field
+db.collectionName.find(<condition>,{"key":1}) :1 mean only specific key with select,<condition> can put {}
+db.collectionName.find(<condition>,{"key":1,"_id":0}) _id: 0 mean dont show id(id will show default
+
+
+-----
+sorting
+
+:1 - order in ascending
+:-1 - order in descending
+
+db.COLLECTION_NAME.find().sort({KEY:1})
+
+
+-----
+index
+
+normal search exp: book.find((rate:{$gt:30}})
+-this will scan each document attribute to find the matches results. let say book have 'title','no','rate','publisher' etc.
+it v scan all attribute include 'name', 'publisher' ...
+this is not efficient.
+if we make index for rate, the rate will become kind of pointer.
+in the query process, the query on search on 'rate' and without scanning on other attributes.
+
+
+db.mycol.createIndex({"title":1,"description":-1})
+db.COLLECTION_NAME.dropIndex({KEY:1})
+db.COLLECTION_NAME.dropIndexes()
+db.mycol.getIndexes()
+
+
+---------
+
+aggregation
+
+$project − Used to select some specific fields from a collection.
+
+$match − This is a filtering operation and thus this can reduce the amount of documents that are given as input to the next stage.
+
+$group − This does the actual aggregation as discussed above.
+
+$sort − Sorts the documents.
+
+$skip − With this, it is possible to skip forward in the list of documents for a given amount of documents.
+
+$limit − This limits the amount of documents to look at, by the given number starting from the current positions.
+
+$unwind − This is used to unwind document that are using arrays. When using an array, the data is kind of pre-joined and this operation will be undone with this to have individual documents again. Thus with this stage we will increase the amount of documents for the next stage.
+
+
+expression
+
+$sum
+avg
+min
+max
+push -Inserts the value to an array in the resulting document.
+addToSet -Inserts the value to an array in the resulting document but does not create duplicates.
+first
+last
+
+
+db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$sum : 1}}}])
+db.mycol.count({key:val})
+db.mycol.distinct("<name of field>")
+
+
+----------
+relationship - manual & dbrefs
+
+manual
+------
+{
+   "_id":ObjectId("52ffc33cd85242f436000001"),
+   "contact": "987654321",
+   "dob": "01-01-1991",
+   "name": "Tom Benzamin",
+   "address_ids": [
+      ObjectId("52ffc4a5d85242602e000000"),
+      ObjectId("52ffc4a5d85242602e000001")
+   ]
+}
+
+find in(...)
+>var result = db.users.findOne({"name":"Tom Benzamin"},{"address_ids":1})
+>var addresses = db.address.find({"_id":{"$in":result["address_ids"]}})
+
+
+dbrefs
+------
+$ref − This field specifies the collection of the referenced document
+
+$id − This field specifies the _id field of the referenced document
+
+$db − This is an optional field and contains the name of the database in which the referenced document lies
+
+{
+   "_id":ObjectId("53402597d852426020000002"),
+   "address": {
+   "$ref": "address_home",
+   "$id": ObjectId("534009e4d852427820000002"),
+   "$db": "tutorialspoint"},
+   "contact": "987654321",
+   "dob": "01-01-1991",
+   "name": "Tom Benzamin"
+}
+>var user = db.users.findOne({"name":"Tom Benzamin"})
+>var dbRef = user.address
+>db[dbRef.$ref].findOne({"_id":(dbRef.$id)})
+
+
+-----
+find and modify - case of buy product and record customer
+
+>db.products.findAndModify({ 
+   query:{_id:2,product_available:{$gt:0}}, 
+   update:{ 
+      $inc:{product_available:-1}, 
+      $push:{product_bought_by:{customer:"rob",date:"9-Jan-2014"}} 
+   }    
+})
+
+sample data
+-----------
+{
+		"_id":1,
+		"product_name": "Samsung S3",
+		"category": "mobiles",
+		"product_total": 5,
+		"product_available": 3,
+		"product_bought_by": [
+			{
+				"customer": "john",
+				"date": "7-Jan-2014"
+			},
+			{
+				"customer": "mark",
+				"date": "8-Jan-2014"
+			}
+		]
+	}
+
+
+
+----
+
+search array of field - advance indexing
+======================
+
+{
+		"address": {
+			"city": "Los Angeles",
+			"state": "California",
+			"pincode": "123"
+		},
+		"tags": [
+			"music",
+			"cricket",
+			"blogs"
+		],
+		"name": "Tom Benzamin"
+	}
+
+
+1. create index for tags : db.users.createIndex({"tags":1})
+
+2. db.users.find({tags:"cricket"}).pretty()
+
+
+search sub-document of field - advance indexing
+============================================
+1. create index for address doc : db.users.createIndex({"address.city":1,"address.state":1,"address.pincode":1})
+2. db.users.find({"address.city":"Los Angeles"}).pretty()
+
