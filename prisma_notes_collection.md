@@ -25,7 +25,7 @@ await db.message.findMany({
 })
 ```
 
-## 2. Select and Update with one query (Next Form Builder)
+## 2. Create foreign child with update query.(Next Form Builder)
 ```
 await prisma.form.update({
 	data:{
@@ -230,4 +230,21 @@ await prisma.conversation.findMany({
 	]
   }
 })
+```
+
+## 14. Select and Update with one query (Next Form Builder)
+```
+return await prisma.form.update({
+    select: {
+      content: true,
+    },
+    data: {
+      visits: {
+        increment: 1,
+      },
+    },
+    where: {
+      shareURL: formUrl,
+    },
+  });
 ```

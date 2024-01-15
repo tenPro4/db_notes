@@ -206,3 +206,18 @@ await prisma.conversation.findMany({
 	]
   }
 })
+
+14. select and update together
+ return await prisma.form.update({
+    select: {
+      content: true,
+    },
+    data: {
+      visits: {
+        increment: 1,
+      },
+    },
+    where: {
+      shareURL: formUrl,
+    },
+  });
