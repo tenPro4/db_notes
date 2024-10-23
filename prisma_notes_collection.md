@@ -2,12 +2,12 @@
 ```bash
 npx prisma init
 npx prisma studio #web interface for viewing
-npx prisma generate
-npx prisma migrate dev
-npx prisma deploy
-npx prisma migrate reset
-npx prisma push
-npx prisma db pull
+npx prisma generate #Generate the Prisma Client
+npx prisma migrate dev #To apply your migrations to the database
+npx prisma deploy # Apply migrations to the database base on existing migration files
+npx prisma migrate reset #This will drop the database and recreate it
+npx prisma db push #synchronize Prisma schema to database without generate migration files
+npx prisma db pull #check the state of your database
 ```
 
 #  Prisma Query
