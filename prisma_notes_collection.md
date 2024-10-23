@@ -7,7 +7,7 @@ npx prisma migrate dev #To apply your migrations to the database
 npx prisma deploy # Apply migrations to the database base on existing migration files
 npx prisma migrate reset #This will drop the database and recreate it
 npx prisma db push #synchronize Prisma schema to database without generate migration files
-npx prisma db pull #check the state of your database
+npx prisma db pull #introspect existing database and update Prisma schema 
 ```
 
 #  Prisma Query
