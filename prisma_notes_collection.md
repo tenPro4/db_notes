@@ -1,6 +1,16 @@
+# Common Use Command
+```bash
+npx prisma init
+npx prisma studio //web interface for viewing
+npx prisma generate
+npx prisma migrate dev
+npx prisma deploy
+npx prisma migrate reset
+npx prisma push
+npx prisma db pull
+```
+
 #  Prisma Query
-- [x] Test
-- [ ] Test2
 ## 1. Pagination / Batch Query (next_discord)
 ```
 await db.message.findMany({
