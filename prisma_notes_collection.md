@@ -1,7 +1,7 @@
 # Common Use Command
 ```bash
 npx prisma init
-npx prisma studio //web interface for viewing
+npx prisma studio #web interface for viewing
 npx prisma generate
 npx prisma migrate dev
 npx prisma deploy
